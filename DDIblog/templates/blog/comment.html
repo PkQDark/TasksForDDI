@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+<form method="post" class="form-horizontal" > {% csrf_token %}
+       <div class="form-group" style="margin-left: 2%">
+        <div class="col-sm-3 left">{{ comment_form.comment|add_class:"form-control" }}</div>
+        <div class="row">
+            <div class="col-md-3 ">
+                <button class="btn btn-block btn-lg btn-file btn-success" type="submit">Добавить коментарий</button>
+            </div>
+        </div>
+           </div>
+    </form>

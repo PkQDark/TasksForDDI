@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block navbar-header %}
+    <a class="navbar-brand">Добавление поста</a>
+{% endblock %}
+
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <a class="close" data-dismiss="alert">×</a>
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block logout %}
+<ul class="navbar-right navbar-nav nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{ cur_user }}
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="caret"></span>
+                    </a>
+                </li>
+                <li><a href="/logout/" class="navbar-link">Выйти<span class="glyphicon glyphicon-log-out"></span></a>
+                </li>
+            </ul>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default panel-my">
+            <div class="panel-heading panel-heading-my"><h4>Пост</h4></div>
+            <div class="jumbotron">
+                <form method="post" class="form-horizontal"> {% csrf_token %}
+                    <div class="form-group">
+                        {% load widget_tweaks %}
+                        <label for="title" class="col-sm-3 control-label">Заголовок:</label>
+                        <div class="col-sm-7">{{ post.title|safe }}</div>
+                        <label for="content" class="col-sm-3 control-label">Текст:</label>
+                        <div class="col-sm-7">{{ post.content|safe }}</div>
+                        </div>
+                    <div class="row">
+                        <div class="col-md-3 col-md-offset-9">
+                            <button class="btn btn-block btn-lg btn-file" type="submit">Добавить пост</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

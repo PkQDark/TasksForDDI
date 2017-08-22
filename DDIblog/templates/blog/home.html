@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block navbar-header %}
+    <a class="navbar-brand">Блоги</a>
+{% endblock %}
+{% block logout %}
+<ul class="navbar-right navbar-nav nav">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{ cur_user }}
+                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="caret"></span>
+                    </a>
+                </li>
+                <li><a href="/logout/" class="navbar-link">Выйти<span class="glyphicon glyphicon-log-out"></span></a>
+                </li>
+            </ul>
+{% endblock %}
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <a class="close" data-dismiss="alert">×</a>
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default panel-my">
+            <div class="col-md-13 col-md-offset-9 center-block" style="margin-top: 2px">
+                    <a class="btn btn-lg btn-default btn-block" style=" background: #7FFF00" href="/add_post/">Добавить свой пост</a>
+            </div>
+            <div>
+                <table class="local_user_table table table-striped" id="db_table">
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1" style="text-align: center; vertical-align: middle;">#</th>
+                            <th style="vertical-align: middle;">Название поста</th>
+                            <th style="vertical-align: middle;">Время загрузки</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for blog in blogs %}
+                            <tr>
+                                <td style="text-align: center;">{{ forloop.counter }}</td>
+                                <td>
+                                    <a href="/blog/{{ blog.id }}">
+                                        {{ blog.title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <small>{{ blog.time }}</small>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <h3 style="text-align: center">Sorry don't have any blogs</h3>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

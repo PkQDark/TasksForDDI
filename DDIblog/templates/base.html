@@ -1,0 +1,57 @@
+{% load static %}<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/starter-template.css" %}">
+    <script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+    <script type="text/javascript" src="{% static "js/general.js" %}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#commenters").on("click", ".reply", function(event){
+                event.preventDefault();
+                var form = $("#postcomment").clone(true);
+                $(this).parent().append(form);
+            });
+        });
+    </script>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {% block navbar-header %}
+            {% endblock %}
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                {% block navigation %}
+                {% endblock %}
+            </ul>
+            {% block logout %}
+            {% endblock %}
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+<div class="container">
+    {% block messages %}
+    {% endblock %}
+</div>
+{% block content %}
+{% endblock %}
+</body>
+</html>
