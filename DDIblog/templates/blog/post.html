@@ -3,6 +3,7 @@
 {% block navbar-header %}
     <a href="/blog/" class="navbar-brand">Посты</a>
 {% endblock %}
+
 {% block logout %}
 <ul class="navbar-right navbar-nav nav">
                 <li class="dropdown">
@@ -16,6 +17,7 @@
                 </li>
             </ul>
 {% endblock %}
+
 {% block messages %}
     {% if messages %}
         {% for message in messages %}
@@ -57,8 +59,8 @@
     <nav aria-label="Page navigation example">
           <ul class="pagination">
               <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-                {% if pervious_page %}
-                <li class="page-item"><a class="page-link" href="?page={{ pervious_page }}">{{ pervious_page }}</a></li>
+                {% if previous_page %}
+                <li class="page-item"><a class="page-link" href="?page={{ previous_page }}">{{ previous_page }}</a></li>
                 {% endif %}
               <li class="page-item"><a class="page-link" href="?page={{ cur_page }}">{{ cur_page }}</a></li>
                 {% if next_page %}
@@ -80,7 +82,5 @@
         </div>
            </div>
     </form>
-
-
 
 {% endblock %}
