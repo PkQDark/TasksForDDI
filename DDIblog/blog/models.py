@@ -22,6 +22,7 @@ class Comment(models.Model):
     author_id = models.ForeignKey(User)
     content = models.TextField('Комментарий')
     pub_date = models.DateTimeField('Дата комментария', auto_now_add=True)
+    level = models.PositiveSmallIntegerField(default=1)
 
     def get_offset(self):
         path_list = self.path.split(' ')

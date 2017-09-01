@@ -7,6 +7,7 @@ from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Q
 
 
 def login_user(request):
@@ -85,10 +86,25 @@ def pagination(list_of_comments, per_page):
         per_page = int(per_page)
     except (TypeError, ValueError):
         raise Exception('Wrong num')
-    num_of_pages = int(len(list_of_comments)/per_page) + 1
+    first_level_comments = list_of_comments.filter(level=1)
+    num_of_pages = int(len(first_level_comments)/per_page)
+    if len(first_level_comments) % per_page or not len(first_level_comments):
+        num_of_pages += 1
     answer_list = []
+    list_of_1st_level = []
     for i in range(num_of_pages):
-        answer_list.append(list_of_comments[i*per_page:(i+1)*per_page])
+        list_of_1st_level.append(first_level_comments[i*per_page:(i+1)*per_page])
+    list_of_1st_level_path = []
+    for list_per_page in list_of_1st_level:
+        temp = []
+        for i in list_per_page:
+            temp.append(i.path)
+        list_of_1st_level_path.append(temp)
+    for i in range(num_of_pages):
+        query = Q()
+        for j in list_of_1st_level_path[i]:
+            query = query | Q(path__startswith=j + ' ') | Q(path=j)
+        answer_list.append(list_of_comments.filter(query))
     return answer_list, num_of_pages
 
 
@@ -115,8 +131,9 @@ def show_post(request, post_id):
                 cur_path += path + ' ' + str(comment.id)
             else:
                 cur_path = str(comment.id)
+            level = len(cur_path.split(' '))
+            comment.level = level
             comment.path = cur_path
-
             comment.save()
             messages.add_message(request, messages.SUCCESS, 'Коментарий успешно добавлен')
             return HttpResponseRedirect(post.get_absolute_url())
