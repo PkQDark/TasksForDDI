@@ -54,19 +54,22 @@
             </div>
         </div>
     {% endfor %}
-    <nav aria-label="Page navigation example">
-          <ul class="pagination">
-              <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
-                {% if previous_page %}
-                <li class="page-item"><a class="page-link" href="?page={{ previous_page }}">{{ previous_page }}</a></li>
-                {% endif %}
-              <li class="page-item"><a class="page-link" href="?page={{ cur_page }}">{{ cur_page }}</a></li>
-                {% if next_page %}
-                <li class="page-item"><a class="page-link" href="?page={{ next_page }}">{{ next_page }}</a></li>
-                {% endif %}
-              <li class="page-item"><a class="page-link" href="?page={{ pages }}">Last</a></li>
-          </ul>
-    </nav>
+
+    {% if pagination_list %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                    {% if previous_page %}
+                        <li class="page-item"><a class="page-link" href="?page={{ previous_page }}">{{ previous_page }}</a></li>
+                    {% endif %}
+                        <li class="page-item"><a class="page-link" href="?page={{ cur_page }}">{{ cur_page }}</a></li>
+                    {% if next_page %}
+                        <li class="page-item"><a class="page-link" href="?page={{ next_page }}">{{ next_page }}</a></li>
+                    {% endif %}
+                <li class="page-item"><a class="page-link" href="?page={{ pages }}">Last</a></li>
+            </ul>
+        </nav>
+    {% endif %}
     </div>
     {% load widget_tweaks %}
      <form method="post" class="form-horizontal" id = 'postcomment'> {% csrf_token %}

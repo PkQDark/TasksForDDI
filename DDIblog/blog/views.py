@@ -87,24 +87,28 @@ def pagination(list_of_comments, per_page):
     except (TypeError, ValueError):
         raise Exception('Wrong num')
     first_level_comments = list_of_comments.filter(level=1)
-    num_of_pages = int(len(first_level_comments)/per_page)
-    if len(first_level_comments) % per_page or not len(first_level_comments):
-        num_of_pages += 1
+    pages = 1
     answer_list = []
-    list_of_1st_level = []
-    for i in range(num_of_pages):
-        list_of_1st_level.append(first_level_comments[i*per_page:(i+1)*per_page])
-    list_of_1st_level_path = []
-    for list_per_page in list_of_1st_level:
-        temp = []
-        for i in list_per_page:
-            temp.append(i.path)
-        list_of_1st_level_path.append(temp)
-    for i in range(num_of_pages):
+    append_list = []
+    count_comments = len(list_of_comments)
+    for comment in first_level_comments:
+        append_list.append(comment)
+        path_start = comment.path
+        nested_comments = list_of_comments.filter(path__startswith=path_start + ' ')
+        for nested_comment in nested_comments:
+            append_list.append(nested_comment)
+        if len(append_list) >= per_page:
+            count_comments -= len(append_list)
+            if count_comments:
+                pages += 1
+            answer_list.append(append_list)
+            append_list = []
+        if count_comments < per_page:
+            answer_list.append(append_list)
+    if not answer_list:
         query = Q()
-        for j in list_of_1st_level_path[i]:
-            query = query | Q(path__startswith=j + ' ') | Q(path=j)
         answer_list.append(list_of_comments.filter(query))
+    num_of_pages = pages
     return answer_list, num_of_pages
 
 
